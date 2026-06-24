@@ -9,7 +9,8 @@ function App() {
 
   const fetchFilteredCandidates = async (currentFilters) => {
     try {
-      const response = await fetch('http://localhost:3000/filter', {
+      const apiUrl = import.meta.env.VITE_API_URL || 'http://localhost:3000';
+      const response = await fetch(`${apiUrl}/filter`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
