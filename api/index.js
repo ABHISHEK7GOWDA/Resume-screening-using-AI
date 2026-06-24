@@ -1,10 +1,9 @@
-const express = require('express');
-const cors = require('cors');
-const multer = require('multer');
-const pdf = require('pdf-parse');
+import express from 'express';
+import cors from 'cors';
+import multer from 'multer';
+import pdf from 'pdf-parse/lib/pdf-parse.js';
 
 const app = express();
-const port = 3000;
 
 app.use(cors());
 app.use(express.json());
@@ -49,7 +48,7 @@ function extractExperience(text) {
 }
 
 // Upload endpoint
-app.post('/upload', upload.array('resumes'), async (req, res) => {
+app.post('/api/upload', upload.array('resumes'), async (req, res) => {
   try {
     const files = req.files;
     const processedCandidates = [];
@@ -87,7 +86,7 @@ app.post('/upload', upload.array('resumes'), async (req, res) => {
 });
 
 // Endpoint to get and filter candidates
-app.post('/filter', (req, res) => {
+app.post('/api/filter', (req, res) => {
   const { requiredSkills = [], minExperience = 0 } = req.body;
   
   const filteredAndScored = candidates.map(candidate => {
@@ -123,11 +122,9 @@ app.post('/filter', (req, res) => {
 });
 
 // Clear database (useful for testing)
-app.post('/clear', (req, res) => {
+app.post('/api/clear', (req, res) => {
   candidates = [];
   res.json({ message: 'Database cleared' });
 });
 
-app.listen(port, () => {
-  console.log(`Backend server running at http://localhost:${port}`);
-});
+export default app;
